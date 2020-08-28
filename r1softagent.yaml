@@ -1,0 +1,22 @@
+--- 
+  
+- name: Playbook to install r1soft repo & install agent  
+  hosts: all  
+  tasks:
+
+    - name: Add r1soft repository
+      yum_repository:
+        name: r1soft
+        description: R1Soft Repository Server
+        baseurl: http://repo.r1soft.com/yum/stable/$basearch/
+        gpgcheck: no
+        enabled: yes 
+      become: yes
+
+
+
+    - name: Ensure a job that runs every 10 minutes.  
+      cron:    
+        name: "install r1soft agent"  
+        minute: "*/10"  
+        job: "yum install serverbackup-enterprise-agent -y"
